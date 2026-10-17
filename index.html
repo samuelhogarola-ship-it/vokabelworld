@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Vokabel World — Tu planetario de idiomas</title>
+<meta name="description" content="Vokabel World: tu planetario de idiomas. Aprende alemán, inglés y más con las mejores apps interactivas. By Samuel Coach de Alemán.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://vokabelworld.com/">
+<meta property="og:title" content="Vokabel World — Tu planetario de idiomas">
+<meta property="og:description" content="Elige un idioma, viaja a su mundo y aprende con las mejores apps interactivas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://vokabelworld.com/">
+<meta property="og:locale" content="es_ES">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+:root{
+  --vk-bg:#0A0E1A;--vk-surface:#111827;--vk-card:#1C2642;--vk-raised:#24384F;
+  --vk-border:rgba(107,168,160,0.18);--vk-teal:#6BA8A0;--vk-teal-dark:#4E8A82;
+  --vk-teal-shadow:#3D7068;--vk-teal-glow:rgba(107,168,160,0.3);--vk-navy:#1B2A4A;
+  --vk-coral:#FF6B6B;--vk-purple:#845EF7;--vk-gold:#FFC93C;--vk-blue:#4DA6FF;
+  --vk-fox:#E8863A;--vk-fox-dark:#C46A28;--vk-pink:#FF6B9D;
+  --vk-text:#EDF2F7;--vk-text2:#8BA4B8;--vk-text3:#506A7E;
+  --vk-star-off:#1C2E3E;
+  color-scheme:dark;
+}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --vk-bg:#F0F4FA;--vk-surface:#FFFFFF;--vk-card:#FFFFFF;--vk-raised:#EDF2F7;
+  --vk-border:rgba(107,168,160,0.2);--vk-text:#0D1B2A;--vk-text2:#506A7E;--vk-text3:#8BA4B8;
+  --vk-star-off:#D8E2EA;color-scheme:light;
+}}
+:root[data-theme="dark"]{
+  --vk-bg:#0A0E1A;--vk-surface:#111827;--vk-card:#1C2642;--vk-raised:#24384F;
+  --vk-border:rgba(107,168,160,0.18);--vk-text:#EDF2F7;--vk-text2:#8BA4B8;--vk-text3:#506A7E;
+  --vk-star-off:#1C2E3E;color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --vk-bg:#F0F4FA;--vk-surface:#FFFFFF;--vk-card:#FFFFFF;--vk-raised:#EDF2F7;
+  --vk-border:rgba(107,168,160,0.2);--vk-text:#0D1B2A;--vk-text2:#506A7E;--vk-text3:#8BA4B8;
+  --vk-star-off:#D8E2EA;color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Nunito',sans-serif;background:var(--vk-bg);color:var(--vk-text);font-weight:700;-webkit-user-select:none;user-select:none}
+
+/* ═══ STARFIELD ═══ */
+canvas.stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ═══ WELCOME / LOGIN ═══ */
+.welcome{position:fixed;inset:0;z-index:600;background:radial-gradient(ellipse at 50% 40%,#162235 0%,#0A0E1A 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity .6s,transform .6s;overflow-y:auto}
+.welcome.out{opacity:0;transform:scale(1.05);pointer-events:none}
+.w-fx{width:130px;height:130px;margin-bottom:8px;animation:fx-float 3s ease-in-out infinite}
+@keyframes fx-float{0%,100%{transform:translateY(0) rotate(0)}25%{transform:translateY(-8px) rotate(2deg)}75%{transform:translateY(-4px) rotate(-2deg)}}
+.w-brand h1{font-size:30px;font-weight:900;text-align:center;letter-spacing:-0.5px;margin-bottom:2px}
+.w-brand .v{color:var(--vk-fox)}.w-brand .w{color:var(--vk-teal)}
+.w-tag{font-size:10px;color:var(--vk-teal);font-weight:800;letter-spacing:2.5px;text-transform:uppercase;text-align:center;margin-bottom:4px}
+.w-sub{font-size:13px;color:var(--vk-text2);margin-bottom:20px;text-align:center;max-width:300px}
+.w-name-wrap{display:flex;gap:0;margin-bottom:18px;max-width:300px;width:100%}
+.w-name{flex:1;padding:12px 14px;border-radius:14px 0 0 14px;border:2px solid var(--vk-border);border-right:none;background:var(--vk-card);color:var(--vk-text);font-family:'Nunito';font-weight:800;font-size:15px;outline:none}
+.w-name:focus{border-color:var(--vk-fox)}.w-name::placeholder{color:var(--vk-text3)}
+.w-name-icon{width:44px;border-radius:0 14px 14px 0;border:2px solid var(--vk-border);border-left:none;background:var(--vk-card);display:grid;place-items:center}
+
+.w-section{font-size:12px;font-weight:900;color:var(--vk-text2);margin-bottom:10px;text-align:center}
+.w-langs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:20px;max-width:420px}
+.w-lang{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 16px;border-radius:16px;background:var(--vk-card);border:2.5px solid var(--vk-border);cursor:pointer;transition:all .25s;min-width:85px;position:relative}
+.w-lang:hover{transform:translateY(-3px);border-color:var(--vk-teal);box-shadow:0 6px 20px rgba(107,168,160,.15)}
+.w-lang.sel{border-color:var(--vk-fox);background:rgba(232,134,58,.08);box-shadow:0 0 24px rgba(232,134,58,.2)}
+.w-lang .flag{width:36px;height:24px;border-radius:4px;overflow:hidden}
+.w-lang .lname{font-size:11px;font-weight:900;color:var(--vk-text)}
+.w-lang .lsub{font-size:9px;color:var(--vk-text3)}
+.w-lang .soon{position:absolute;top:-6px;right:-6px;background:var(--vk-purple);color:#fff;font-size:8px;font-weight:900;padding:2px 6px;border-radius:8px;letter-spacing:.5px}
+.w-go{background:linear-gradient(135deg,var(--vk-fox),var(--vk-fox-dark));color:#fff;font-family:'Nunito';font-weight:900;font-size:16px;padding:13px 44px;border-radius:16px;border:none;border-bottom:5px solid #A55420;cursor:pointer;transition:transform .1s;box-shadow:0 4px 24px rgba(232,134,58,.3)}
+.w-go:hover{transform:translateY(-2px)}.w-go:active{transform:translateY(1px);border-bottom-width:3px}
+.w-go:disabled{opacity:.3;cursor:default;transform:none;box-shadow:none}
+
+/* ═══ APP SHELL ═══ */
+.app{height:100%;display:flex;flex-direction:column;overflow:hidden;position:relative;z-index:1}
+.topbar{position:sticky;top:0;z-index:100;height:52px;padding:0 12px;display:flex;align-items:center;gap:6px;background:var(--vk-surface);border-bottom:2px solid var(--vk-border);flex-shrink:0;backdrop-filter:blur(12px)}
+.tb-back{background:none;border:none;color:var(--vk-teal);cursor:pointer;padding:4px;border-radius:10px;display:none}
+.tb-back:hover{background:var(--vk-raised)}
+.tb-fx{width:28px;height:28px;flex-shrink:0}
+.tb-brand{font-size:14px;font-weight:900;flex:1}.tb-brand .v{color:var(--vk-fox)}.tb-brand .w{color:var(--vk-teal)}
+.tb-name{font-size:10px;color:var(--vk-text2);max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tb-rocket{background:none;border:none;cursor:pointer;font-size:18px;padding:4px 6px;border-radius:10px;transition:transform .2s}
+.tb-rocket:hover{transform:scale(1.15);background:var(--vk-raised)}
+
+/* ═══ HUB / PLANETARIUM ═══ */
+.hub{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;position:relative}
+.hub-bg{position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 30%,#111827,#0A0E1A)}
+
+.hub-hero{text-align:center;padding:20px 16px 8px;position:relative}
+.hub-hero h2{font-size:20px;font-weight:900}.hub-hero .v{color:var(--vk-fox)}.hub-hero .w{color:var(--vk-teal)}
+.hub-hero p{font-size:11px;color:var(--vk-text2);margin-top:2px}
+
+.fx-bar{display:flex;align-items:center;gap:10px;max-width:360px;margin:8px auto 10px;background:var(--vk-card);border:2px solid var(--vk-border);border-radius:16px;padding:10px 14px;animation:fx-in .4s ease}
+@keyframes fx-in{from{opacity:0;transform:translateY(8px)}}
+.fx-bar p{font-size:12px;color:var(--vk-text2);line-height:1.35}.fx-bar strong{color:var(--vk-fox)}
+
+/* Stats row */
+.stats-row{display:flex;gap:6px;max-width:360px;margin:0 auto 14px;padding:0 16px}
+.stat-card{flex:1;background:var(--vk-card);border:1.5px solid var(--vk-border);border-radius:12px;padding:8px;text-align:center}
+.stat-val{font-size:20px;font-weight:900;line-height:1}
+.stat-lbl{font-size:8px;color:var(--vk-text3);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+
+/* ═══ WORLDS GRID ═══ */
+.worlds-title{font-size:11px;font-weight:900;color:var(--vk-text3);text-transform:uppercase;letter-spacing:1.5px;text-align:center;margin-bottom:10px}
+.worlds-grid{display:flex;flex-direction:column;align-items:center;gap:14px;padding:0 16px 40px}
+
+.planet-card{width:100%;max-width:360px;background:var(--vk-card);border:2px solid var(--vk-border);border-radius:20px;padding:18px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.planet-card:hover{transform:translateY(-3px);border-color:var(--vk-teal);box-shadow:0 8px 30px rgba(107,168,160,.15)}
+.planet-card:active{transform:scale(.97)}
+.planet-card.locked{opacity:.5;cursor:default;pointer-events:none}
+.planet-card .glow{position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;filter:blur(40px);opacity:.15;pointer-events:none}
+.planet-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;position:relative}
+.planet-orb{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:26px;border:3px solid rgba(255,255,255,.15);box-shadow:0 4px 16px rgba(0,0,0,.3);flex-shrink:0;position:relative}
+.planet-orb .ring{position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(255,255,255,.06);animation:orbit 8s linear infinite}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.planet-info{flex:1}
+.planet-info h3{font-size:16px;font-weight:900;margin-bottom:1px}
+.planet-info .desc{font-size:10px;color:var(--vk-text2);line-height:1.3}
+.planet-fx{position:absolute;top:0;right:0;width:32px;height:32px}
+.planet-modes{display:flex;flex-wrap:wrap;gap:5px}
+.planet-mode{font-size:9px;font-weight:800;padding:3px 8px;border-radius:8px;background:var(--vk-raised);color:var(--vk-text2)}
+.planet-bar{margin-top:8px;height:5px;border-radius:4px;background:var(--vk-star-off);overflow:hidden}
+.planet-bar div{height:100%;border-radius:4px;transition:width .6s}
+.planet-coming{position:absolute;top:12px;right:12px;background:var(--vk-purple);color:#fff;font-size:9px;font-weight:900;padding:3px 10px;border-radius:10px;letter-spacing:.5px}
+
+/* ═══ WORLD VIEW (inside a language) ═══ */
+.world-scr{position:absolute;inset:0;z-index:5;background:var(--vk-bg);overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;pointer-events:none;transition:opacity .35s}
+.world-scr.active{opacity:1;pointer-events:auto}
+.world-hero{position:relative;padding:20px 16px 14px;text-align:center;overflow:hidden}
+.world-hero-bg{position:absolute;inset:0;opacity:.1}
+.world-hero h2{font-size:20px;font-weight:900;position:relative}
+.world-hero p{font-size:11px;color:var(--vk-text2);position:relative;margin-top:3px}
+.world-hero .badge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:4px 12px;border-radius:10px;font-size:10px;font-weight:900;position:relative}
+
+/* ═══ MODAL ═══ */
+.mo-bg{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);place-items:center;padding:16px}
+.mo-bg.open{display:grid}
+.mo-box{background:var(--vk-surface);border:2px solid var(--vk-border);border-radius:20px;padding:24px 20px;max-width:320px;width:100%;text-align:center;animation:mo-pop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes mo-pop{from{opacity:0;transform:scale(.8) translateY(20px)}}
+.mo-fx{width:70px;height:70px;margin:0 auto 8px}
+.btn-vk{font-family:'Nunito';font-weight:900;padding:11px 22px;border-radius:14px;border:none;cursor:pointer;font-size:14px;transition:transform .1s;border-bottom:4px solid rgba(0,0,0,.2)}
+.btn-vk:hover{transform:translateY(-1px)}.btn-vk:active{transform:translateY(1px);border-bottom-width:2px}
+.btn-vk.pri{background:linear-gradient(135deg,var(--vk-fox),var(--vk-fox-dark));color:#fff;border-bottom-color:#A55420}
+.btn-vk.sec{background:var(--vk-raised);color:var(--vk-text2);border-bottom-color:var(--vk-border)}
+.btn-vk.teal{background:linear-gradient(135deg,var(--vk-teal),var(--vk-teal-dark));color:#fff;border-bottom-color:var(--vk-teal-shadow)}
+.btn-x{position:absolute;top:8px;right:10px;background:none;border:none;cursor:pointer;color:var(--vk-text3);padding:4px;font-size:14px}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--vk-fox),var(--vk-fox-dark));color:#fff;padding:10px 18px;border-radius:14px;font-weight:900;font-size:12px;z-index:350;border-bottom:3px solid #A55420;display:flex;align-items:center;gap:6px;box-shadow:0 4px 20px rgba(232,134,58,.3);animation:tu .3s ease,tto .3s ease 2.5s forwards;white-space:nowrap}
+@keyframes tu{from{opacity:0;transform:translateX(-50%) translateY(14px)}}
+@keyframes tto{to{opacity:0;transform:translateX(-50%) translateY(14px)}}
+
+@media(max-width:420px){.planet-card{padding:14px}.planet-orb{width:48px;height:48px;font-size:22px}}
+</style>
+
+<!-- ═══ WELCOME SCREEN ═══ -->
+<div class="welcome" id="welcome">
+  <svg class="w-fx" viewBox="0 0 140 140"><path d="M105 108 Q125 95 130 75 Q132 68 126 72 Q118 80 108 100" fill="#E8863A" opacity=".8"/><ellipse cx="70" cy="95" rx="38" ry="32" fill="#E8863A"/><path d="M40 82 Q38 105 42 118 L98 118 Q102 105 100 82 Q85 76 70 78 Q55 76 40 82Z" fill="#fff" opacity=".85"/><line x1="70" y1="82" x2="70" y2="118" stroke="#eee" stroke-width="1" opacity=".4"/><circle cx="62" cy="98" r="2" fill="var(--vk-teal)" opacity=".5"/><circle cx="62" cy="107" r="2" fill="var(--vk-teal)" opacity=".5"/><ellipse cx="70" cy="55" rx="28" ry="24" fill="#E8863A"/><ellipse cx="70" cy="60" rx="18" ry="14" fill="#FCDCB0" opacity=".6"/><polygon points="48,20 38,42 56,38" fill="#E8863A"/><polygon points="50,24 42,40 55,37" fill="#FCDCB0" opacity=".5"/><polygon points="92,20 102,42 84,38" fill="#E8863A"/><polygon points="90,24 98,40 85,37" fill="#FCDCB0" opacity=".5"/><ellipse cx="58" cy="52" rx="8" ry="9" fill="#fff"/><ellipse cx="82" cy="52" rx="8" ry="9" fill="#fff"/><circle cx="60" cy="53" r="4.5" fill="#1B2A4A"/><circle cx="84" cy="53" r="4.5" fill="#1B2A4A"/><circle cx="61.5" cy="51" r="1.8" fill="#fff"/><circle cx="85.5" cy="51" r="1.8" fill="#fff"/><ellipse cx="70" cy="62" rx="4" ry="3" fill="#1B2A4A"/><ellipse cx="69" cy="61" rx="1.2" ry=".8" fill="#fff" opacity=".4"/><path d="M63 67 Q70 74 77 67" stroke="#1B2A4A" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="46" cy="60" r="4" fill="#FF6B6B" opacity=".25"/><circle cx="94" cy="60" r="4" fill="#FF6B6B" opacity=".25"/><path d="M32 92 Q22 80 18 70" stroke="#E8863A" stroke-width="7" fill="none" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="-6 32 92;6 32 92;-6 32 92" dur="1.8s" repeatCount="indefinite"/></path><path d="M108 92 Q118 80 122 70" stroke="#E8863A" stroke-width="7" fill="none" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="6 108 92;-6 108 92;6 108 92" dur="1.8s" repeatCount="indefinite"/></path><ellipse cx="55" cy="124" rx="10" ry="5" fill="#C46A28"/><ellipse cx="85" cy="124" rx="10" ry="5" fill="#C46A28"/></svg>
+  <div class="w-brand"><h1><span class="v">Vokabel</span> <span class="w">World</span></h1></div>
+  <div class="w-tag">by Samuel Coach de Alemán</div>
+  <p class="w-sub">Tu planetario de idiomas. Elige un idioma, viaja a su mundo y aprende con las mejores apps.</p>
+  <div class="w-name-wrap"><input class="w-name" id="wName" placeholder="Tu nombre..." maxlength="20" autocomplete="off"><div class="w-name-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--vk-text3)"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div></div>
+  <div class="w-section">¿Qué idioma quieres aprender?</div>
+  <div class="w-langs" id="wLangs"></div>
+  <button class="w-go" id="wGo" disabled>¡Despegar! 🚀</button>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div class="app" id="app" hidden>
+  <canvas class="stars" id="starCanvas"></canvas>
+  <header class="topbar">
+    <button class="tb-back" id="tbBack"><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--vk-teal)"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+    <svg class="tb-fx" viewBox="0 0 60 60"><ellipse cx="30" cy="38" rx="16" ry="14" fill="#E8863A"/><ellipse cx="30" cy="28" rx="13" ry="11" fill="#E8863A"/><polygon points="20,12 16,24 24,21" fill="#E8863A"/><polygon points="40,12 44,24 36,21" fill="#E8863A"/><ellipse cx="25" cy="27" rx="4" ry="4.5" fill="#fff"/><ellipse cx="35" cy="27" rx="4" ry="4.5" fill="#fff"/><circle cx="26" cy="27.5" r="2.2" fill="#1B2A4A"/><circle cx="36" cy="27.5" r="2.2" fill="#1B2A4A"/><circle cx="26.8" cy="26.5" r=".9" fill="#fff"/><circle cx="36.8" cy="26.5" r=".9" fill="#fff"/><ellipse cx="30" cy="32" rx="2" ry="1.5" fill="#1B2A4A"/><path d="M27 34 Q30 38 33 34" stroke="#1B2A4A" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
+    <span class="tb-brand"><span class="v">Vokabel</span> <span class="w">World</span></span>
+    <span class="tb-name" id="tbName"></span>
+    <button class="tb-rocket" id="tbRocket" title="Volver al planetario">🚀</button>
+  </header>
+
+  <div class="hub" id="hub">
+    <div class="hub-bg"></div>
+    <div class="hub-hero">
+      <h2><span class="v">Vokabel</span> <span class="w">World</span></h2>
+      <p id="hubSub">Planetario de idiomas</p>
+    </div>
+    <div class="fx-bar" id="fxBar">
+      <svg viewBox="0 0 50 50" width="38" height="38"><ellipse cx="25" cy="32" rx="12" ry="10" fill="#E8863A"/><ellipse cx="25" cy="22" rx="10" ry="9" fill="#E8863A"/><polygon points="17,10 14,19 20,17" fill="#E8863A"/><polygon points="33,10 36,19 30,17" fill="#E8863A"/><ellipse cx="21" cy="21" rx="3" ry="3.5" fill="#fff"/><ellipse cx="29" cy="21" rx="3" ry="3.5" fill="#fff"/><circle cx="22" cy="21.5" r="1.7" fill="#1B2A4A"/><circle cx="30" cy="21.5" r="1.7" fill="#1B2A4A"/><circle cx="22.5" cy="20.8" r=".7" fill="#fff"/><circle cx="30.5" cy="20.8" r=".7" fill="#fff"/><ellipse cx="25" cy="25.5" rx="1.5" ry="1" fill="#1B2A4A"/><path d="M22 27.5 Q25 31 28 27.5" stroke="#1B2A4A" stroke-width="1" fill="none" stroke-linecap="round"/></svg>
+      <p id="fxMsg"></p>
+    </div>
+    <div class="stats-row" id="statsRow"></div>
+    <div class="worlds-title" id="worldsTitle">Mundos disponibles</div>
+    <div class="worlds-grid" id="worldsGrid"></div>
+  </div>
+
+  <div class="world-scr" id="worldScr"></div>
+</div>
+
+<div class="mo-bg" id="moBg"><div class="mo-box" id="moBox"></div></div>
+
+<script>
+/* ═══════════ LANGUAGES TO LEARN ═══════════ */
+const LANGUAGES=[
+  {id:'de',name:'Deutsch',native:'Alemán',flag:'de',color:'#E8863A',icon:'🇩🇪',
+   planets:[
+     {id:'lab',name:'Vokabel Lab',icon:'🧪',color:'#6BA8A0',desc:'Vocabulario, tarjetas, tests y juegos',url:'https://vokabellab.com',modes:['Test','Tarjetas','Relacionar','Ordenar','Crucigrama'],ready:true},
+     {id:'ddd',name:'Der Die Das',icon:'🧬',color:'#845EF7',desc:'Domina los artículos alemanes',url:'https://derdiedas.vokabellab.com',modes:['Artículos','Test','Review'],ready:true},
+     {id:'ctx',name:'ImKontext',icon:'📰',color:'#4DA6FF',desc:'Aprende con textos reales y contexto',url:'https://imkontext.vokabellab.com',modes:['Flashcards','Test','Lückentext'],ready:true},
+   ]},
+  {id:'en',name:'English',native:'Inglés',flag:'gb',color:'#4DA6FF',icon:'🇬🇧',
+   planets:[
+     {id:'lab',name:'English Lab',icon:'🧪',color:'#6BA8A0',desc:'Vocabulary, cards, tests & games',url:'https://vokabellab.com/english',modes:['Test','Cards','Match','Order','Crossword'],ready:false},
+   ]},
+  {id:'es',name:'Español',native:'Español',flag:'es',color:'#FF6B6B',icon:'🇪🇸',
+   planets:[
+     {id:'lab',name:'Vokabel Lab ES',icon:'🧪',color:'#6BA8A0',desc:'Vocabulario, tarjetas y tests',url:'https://vokabellab.com/spanish',modes:['Test','Tarjetas','Relacionar'],ready:false},
+   ]},
+  {id:'fi',name:'Suomi',native:'Finlandés',flag:'fi',color:'#003580',icon:'🇫🇮',
+   planets:[
+     {id:'lab',name:'Vokabel Lab FI',icon:'🧪',color:'#6BA8A0',desc:'Sanasto, kortit ja testit',url:'https://vokabellab.com/finnish',modes:['Test','Kortit','Yhdistä'],ready:false},
+   ]},
+];
+
+const FLAGS={
+  de:(w,h)=>`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" style="border-radius:3px"><rect width="${w}" height="${h/3}" fill="#000"/><rect y="${h/3}" width="${w}" height="${h/3}" fill="#DD0000"/><rect y="${h*2/3}" width="${w}" height="${h/3}" fill="#FFCC00"/></svg>`,
+  gb:(w,h)=>`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" style="border-radius:3px"><rect width="${w}" height="${h}" fill="#012169"/><path d="M0 0L${w} ${h}M${w} 0L0 ${h}" stroke="#fff" stroke-width="${h*.12}"/><path d="M0 0L${w} ${h}M${w} 0L0 ${h}" stroke="#C8102E" stroke-width="${h*.06}"/><path d="M${w/2} 0V${h}M0 ${h/2}H${w}" stroke="#fff" stroke-width="${h*.2}"/><path d="M${w/2} 0V${h}M0 ${h/2}H${w}" stroke="#C8102E" stroke-width="${h*.12}"/></svg>`,
+  es:(w,h)=>`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" style="border-radius:3px"><rect width="${w}" height="${h*.25}" fill="#AA151B"/><rect y="${h*.25}" width="${w}" height="${h*.5}" fill="#F1BF00"/><rect y="${h*.75}" width="${w}" height="${h*.25}" fill="#AA151B"/></svg>`,
+  fi:(w,h)=>`<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" style="border-radius:3px"><rect width="${w}" height="${h}" fill="#fff"/><rect x="0" y="${h*.4}" width="${w}" height="${h*.2}" fill="#003580"/><rect x="${w*.28}" y="0" width="${w*.15}" height="${h}" fill="#003580"/></svg>`,
+};
+
+/* ═══════════ FUCHSY HEAD ═══════════ */
+function fxHead(sz,acc,col){
+  const r=sz/50;let ex='';
+  if(acc==='helmet')ex=`<ellipse cx="${25*r}" cy="${16*r}" rx="${12*r}" ry="${8*r}" fill="${col}" opacity=".4"/><ellipse cx="${25*r}" cy="${16*r}" rx="${9*r}" ry="${6*r}" fill="rgba(255,255,255,.15)"/>`;
+  if(acc==='glasses')ex=`<rect x="${16*r}" y="${19*r}" width="${8*r}" height="${5*r}" rx="${2*r}" fill="rgba(0,0,0,.4)" stroke="${col}" stroke-width="${.8*r}"/><rect x="${26*r}" y="${19*r}" width="${8*r}" height="${5*r}" rx="${2*r}" fill="rgba(0,0,0,.4)" stroke="${col}" stroke-width="${.8*r}"/><line x1="${24*r}" y1="${21*r}" x2="${26*r}" y2="${21*r}" stroke="${col}" stroke-width="${.6*r}"/>`;
+  return`<svg viewBox="0 0 ${sz} ${sz}" width="${sz}" height="${sz}"><ellipse cx="${25*r}" cy="${32*r}" rx="${12*r}" ry="${10*r}" fill="#E8863A"/><ellipse cx="${25*r}" cy="${22*r}" rx="${10*r}" ry="${9*r}" fill="#E8863A"/><ellipse cx="${25*r}" cy="${25*r}" rx="${6*r}" ry="${5*r}" fill="#FCDCB0" opacity=".5"/><polygon points="${17*r},${10*r} ${14*r},${19*r} ${20*r},${17*r}" fill="#E8863A"/><polygon points="${18*r},${12*r} ${15.5*r},${18*r} ${20*r},${16.5*r}" fill="#FCDCB0" opacity=".4"/><polygon points="${33*r},${10*r} ${36*r},${19*r} ${30*r},${17*r}" fill="#E8863A"/><polygon points="${32*r},${12*r} ${34.5*r},${18*r} ${30*r},${16.5*r}" fill="#FCDCB0" opacity=".4"/><ellipse cx="${21*r}" cy="${21*r}" rx="${3*r}" ry="${3.5*r}" fill="#fff"/><ellipse cx="${29*r}" cy="${21*r}" rx="${3*r}" ry="${3.5*r}" fill="#fff"/><circle cx="${22*r}" cy="${21.5*r}" r="${1.7*r}" fill="#1B2A4A"/><circle cx="${30*r}" cy="${21.5*r}" r="${1.7*r}" fill="#1B2A4A"/><circle cx="${22.5*r}" cy="${20.8*r}" r="${.7*r}" fill="#fff"/><circle cx="${30.5*r}" cy="${20.8*r}" r="${.7*r}" fill="#fff"/><ellipse cx="${25*r}" cy="${25.5*r}" rx="${1.5*r}" ry="${r}" fill="#1B2A4A"/><path d="M${22*r} ${27.5*r}Q${25*r} ${31*r} ${28*r} ${27.5*r}" stroke="#1B2A4A" stroke-width="${r}" fill="none" stroke-linecap="round"/><circle cx="${16*r}" cy="${24*r}" r="${2*r}" fill="#FF6B6B" opacity=".2"/><circle cx="${34*r}" cy="${24*r}" r="${2*r}" fill="#FF6B6B" opacity=".2"/>${ex}</svg>`;
+}
+
+/* ═══════════ STATE ═══════════ */
+let userName='',selectedLang=null,progress={};
+
+/* ═══════════ STARFIELD ═══════════ */
+function initStars(){
+  const c=document.getElementById('starCanvas');if(!c)return;
+  const ctx=c.getContext('2d');
+  let stars=[];
+  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;stars=[];for(let i=0;i<90;i++)stars.push({x:Math.random()*c.width,y:Math.random()*c.height,r:.3+Math.random()*1.5,a:.2+Math.random()*.6,s:.002+Math.random()*.008,d:Math.random()>.5?1:-1})}
+  resize();window.addEventListener('resize',resize);
+  function draw(){ctx.clearRect(0,0,c.width,c.height);stars.forEach(s=>{s.a+=s.s*s.d;if(s.a>1||s.a<.15)s.d*=-1;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,6.28);ctx.fillStyle=`rgba(180,210,240,${s.a})`;ctx.fill()});requestAnimationFrame(draw)}
+  draw();
+}
+
+/* ═══════════ WELCOME SCREEN ═══════════ */
+const wLangs=document.getElementById('wLangs');
+LANGUAGES.forEach(lang=>{
+  const b=document.createElement('button');b.className='w-lang';
+  const hasReady=lang.planets.some(p=>p.ready);
+  b.innerHTML=`<div class="flag">${FLAGS[lang.flag](36,24)}</div><div class="lname">${lang.name}</div><div class="lsub">${lang.native}</div>${!hasReady?'<span class="soon">SOON</span>':''}`;
+  if(!hasReady)b.style.opacity='.45';
+  b.onclick=()=>{
+    if(!hasReady)return;
+    wLangs.querySelectorAll('.w-lang').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');selectedLang=lang.id;checkWelcome();
+  };
+  wLangs.appendChild(b);
+});
+document.getElementById('wName').oninput=checkWelcome;
+function checkWelcome(){document.getElementById('wGo').disabled=!(selectedLang&&document.getElementById('wName').value.trim())}
+document.getElementById('wGo').onclick=()=>{
+  userName=document.getElementById('wName').value.trim();
+  try{localStorage.setItem('vw_name',userName);localStorage.setItem('vw_lang',selectedLang);localStorage.setItem('vw_started','1')}catch(e){}
+  startApp();
+};
+
+/* ═══════════ START APP ═══════════ */
+function startApp(){
+  document.getElementById('welcome').classList.add('out');
+  setTimeout(()=>{try{document.getElementById('welcome').remove()}catch(e){}},600);
+  document.getElementById('app').hidden=false;
+  document.getElementById('tbName').textContent=userName;
+  initStars();
+  renderHub();
+}
+
+/* ═══════════ HUB (PLANETARIUM) ═══════════ */
+function renderHub(){
+  document.getElementById('tbBack').style.display='none';
+  document.getElementById('worldScr').classList.remove('active');
+  document.getElementById('hub').style.display='';
+
+  const lang=LANGUAGES.find(l=>l.id===selectedLang);
+  document.getElementById('hubSub').textContent=`Explorando: ${lang.icon} ${lang.name}`;
+  document.getElementById('fxMsg').innerHTML=`<strong>¡Hola, ${userName}!</strong> Bienvenido al mundo de <strong style="color:${lang.color}">${lang.name}</strong>. Elige un planeta para empezar.`;
+
+  renderStats();
+  renderPlanets(lang);
+}
+
+function renderStats(){
+  const row=document.getElementById('statsRow');
+  const visits=progress.totalVisits||0;
+  const fav=progress.favorites||0;
+  row.innerHTML=`<div class="stat-card"><div class="stat-val" style="color:var(--vk-teal)">${visits}</div><div class="stat-lbl">Visitas</div></div><div class="stat-card"><div class="stat-val" style="color:var(--vk-gold)">${fav}</div><div class="stat-lbl">Favoritos</div></div><div class="stat-card"><div class="stat-val" style="color:var(--vk-fox)">${LANGUAGES.find(l=>l.id===selectedLang).planets.length}</div><div class="stat-lbl">Planetas</div></div>`;
+}
+
+function renderPlanets(lang){
+  const grid=document.getElementById('worldsGrid');grid.innerHTML='';
+  document.getElementById('worldsTitle').textContent=`Mundos de ${lang.name}`;
+
+  lang.planets.forEach(planet=>{
+    const card=document.createElement('div');
+    card.className='planet-card'+(planet.ready?'':' locked');
+    const pProgress=progress[selectedLang+'_'+planet.id]||0;
+    card.innerHTML=`
+      <div class="glow" style="background:${planet.color}"></div>
+      ${!planet.ready?'<div class="planet-coming">Próximamente</div>':''}
+      <div class="planet-top">
+        <div class="planet-orb" style="background:linear-gradient(135deg,${planet.color},${planet.color}dd)">
+          <div class="ring"></div>
+          <span>${planet.icon}</span>
+        </div>
+        <div class="planet-info">
+          <h3 style="color:${planet.color}">${planet.name}</h3>
+          <div class="desc">${planet.desc}</div>
+        </div>
+        <div class="planet-fx">${fxHead(32,'helmet',planet.color)}</div>
+      </div>
+      <div class="planet-modes">${planet.modes.map(m=>`<span class="planet-mode">${m}</span>`).join('')}</div>
+      <div class="planet-bar"><div style="width:${pProgress}%;background:${planet.color}"></div></div>
+    `;
+    if(planet.ready){
+      card.onclick=()=>{
+        playTick();
+        launchPlanet(planet,lang);
+      };
+    }
+    grid.appendChild(card);
+  });
+}
+
+/* ═══════════ LAUNCH PLANET ═══════════ */
+function launchPlanet(planet,lang){
+  const key=selectedLang+'_'+planet.id;
+  progress.totalVisits=(progress.totalVisits||0)+1;
+  saveP();
+
+  showLaunchModal(planet,lang);
+}
+
+function showLaunchModal(planet,lang){
+  const bg=document.getElementById('moBg'),box=document.getElementById('moBox');
+  box.innerHTML=`
+    <div class="mo-fx">${fxHead(70,'helmet',planet.color)}</div>
+    <h3 style="font-size:18px;margin-bottom:4px;color:${planet.color}">${planet.icon} ${planet.name}</h3>
+    <p style="font-size:11px;color:var(--vk-text2);margin-bottom:4px">${planet.desc}</p>
+    <p style="font-size:10px;color:var(--vk-text3);margin-bottom:14px">${planet.modes.join(' · ')}</p>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn-vk pri" id="mLaunch">🚀 ¡Despegar!</button>
+      <button class="btn-vk sec" id="mCancel">Volver</button>
+    </div>
+    <p style="font-size:9px;color:var(--vk-text3);margin-top:10px">Se abrirá <strong>${planet.url}</strong> en una nueva pestaña.<br>Usa el 🚀 para volver al planetario.</p>
+  `;
+  bg.classList.add('open');
+  document.getElementById('mCancel').onclick=()=>bg.classList.remove('open');
+  document.getElementById('mLaunch').onclick=()=>{
+    bg.classList.remove('open');
+    const url=new URL(planet.url);
+    url.searchParams.set('from','world');
+    if(userName)url.searchParams.set('name',userName);
+    window.open(url.toString(),'_blank');
+    toast(`🚀 Viajando a ${planet.name}...`);
+  };
+  bg.onclick=e=>{if(e.target===bg)bg.classList.remove('open')};
+}
+
+/* ═══════════ AUDIO ═══════════ */
+let audioCtx;
+function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function playTick(){try{const a=getAudio(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=800;g.gain.setValueAtTime(.06,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.07);o.start();o.stop(a.currentTime+.07)}catch(e){}}
+
+/* ═══════════ UTILS ═══════════ */
+function toast(msg){document.querySelectorAll('.toast').forEach(t=>t.remove());const t=document.createElement('div');t.className='toast';t.innerHTML=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000)}
+
+/* ═══════════ PERSISTENCE ═══════════ */
+function saveP(){
+  try{localStorage.setItem('vw_progress',JSON.stringify(progress))}catch(e){}
+}
+function loadP(){
+  try{const s=localStorage.getItem('vw_progress');if(s)progress=JSON.parse(s)}catch(e){}
+}
+
+/* ═══════════ INIT ═══════════ */
+async function init(){
+  await loadP();
+  let started=false;
+  try{
+    started=localStorage.getItem('vw_started');
+    const l=localStorage.getItem('vw_lang');
+    if(l&&LANGUAGES.find(x=>x.id===l))selectedLang=l;
+    userName=localStorage.getItem('vw_name')||'';
+  }catch(e){}
+  if(started&&selectedLang){document.getElementById('wName').value=userName;startApp()}
+}
+init();
+
+document.getElementById('tbRocket').onclick=()=>{playTick();renderHub()};
+document.getElementById('tbBack').onclick=()=>{playTick();renderHub()};
+</script>
+
+</body></html>
